@@ -52,15 +52,28 @@ label{
 
 .add{
     
-    width: 200px;
+    width: 250px;
     margin: 10px 0px 0px 25px;
     border: solid 1px #FFF;
     border-radius: 10px;
-    height: 45px;
+    height: 50px;
     color: #FFF;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     background: linear-gradient(to bottom, #336600 0%,#034d03 100% );
+}
+
+.exp{
+    
+    width: 250px;
+    margin: 10px 0px 0px 25px;
+    border: solid 1px #FFF;
+    border-radius: 10px;
+    height: 50px;
+    color: #FFF;
+    font-size: 1.6rem;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #7c949b 0%,#333141 100% );
 }
 
 
@@ -103,4 +116,22 @@ td{
 }
 
 
+/* end table */
 
+
+
+.nameEmployee #employee{
+    width: 50%;
+}
+
+.nameEmployee{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.nameEmployee label{
+    width: 50%;
+    margin: 35px 0px 0px 30px;
+    font-size: 1.5rem;
+}

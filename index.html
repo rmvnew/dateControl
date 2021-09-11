@@ -10,13 +10,21 @@
 </head>
 <body>
 
-    <div class="dateField">
-        <label for="">Data</label>
-        <input type="text" id="date" placeholder="00/00/00" data-mask="00/00/0000" />
-    </div>
+    
 
     <form action="">
+        
+        <div class="nameEmployee">
+            <label for="">Nome do funcionário</label>
+            <input type="text" id="employee" placeholder="Nome do Funcionário aqui">
+        </div>
+
         <div class="container">
+            
+            <div class="dateField">
+                <label for="">Data</label>
+                <input type="text" id="date" placeholder="00/00/0000" data-mask="00/00/0000" />
+            </div>
             <div class="unit">
                 <label for="">Ent manhã</label>
                 <input type="text" id="entradaManha" placeholder="00:00" data-mask="00:00">
@@ -42,14 +50,21 @@
             </div>
         </div>
     </form>
-    <input type="button" class="add" value="Adicionar" onclick="addElements()"/>
+    
+    <div class="actions">
+        <input type="button" class="add" value="Adicionar" onclick="addElements()"/>
+        <input type="button" id="btnExport" class="exp" value="Exportar Excel" />
+    </div>
 
-
-    <table id="table">
+    <div id="dvData">
+        <table id="table">
         
        
-    </table>
+        </table>
+    
+    </div>
 
+    
     <script src="/jquery-3.6.0.min.js"></script>
     <script src="/jquery.mask.js"></script>
     <script type="text/javascript">

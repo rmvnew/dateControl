@@ -82,12 +82,25 @@ function ShowElements(){
         }
                         
     }
-    
-
-    
-
-    
-   
-    
 
 }
+
+
+
+$("#btnExport").click(function(e) {
+    console.log('teste')
+    let nameEmployee = document.getElementById('employee').value
+    let a = document.createElement('a');
+    let data_type = 'data:application/vnd.ms-excel';
+    let table_div = document.getElementById('dvData');
+    let table_html = table_div.outerHTML.replace(/ /g, '%20');
+    a.href = data_type + ', ' + table_html;
+    console.log('name: ',nameEmployee)
+    if(nameEmployee != ''){
+        a.download = `${nameEmployee}.xls`;
+    }else{
+        a.download = 'filename.xls';
+    }
+    a.click();
+    e.preventDefault();
+  });
