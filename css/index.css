@@ -1,0 +1,106 @@
+body{
+    background-color: rgb(35, 35, 36);
+}
+
+.container{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+input{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 7px;
+    width: 120px;
+    margin: 10px 0px 0px 25px;
+    border: solid 2px rgb(185, 185, 185);
+}
+
+.dateField input{
+    width: 150px;
+}
+
+.dateField label{
+    width: 150px;
+    text-align: center;
+}
+
+.dateField{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+}
+
+
+
+label{
+    color: #FFF;
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 120px;
+    margin: 10px 0px 0px 25px;
+}
+
+.unit{
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.add{
+    
+    width: 200px;
+    margin: 10px 0px 0px 25px;
+    border: solid 1px #FFF;
+    border-radius: 10px;
+    height: 45px;
+    color: #FFF;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #336600 0%,#034d03 100% );
+}
+
+
+/* tabela */
+
+table{
+    margin: 25px 0px 0px 25px;
+}
+
+th{
+    text-align: center;
+    padding: 5px 0px;
+    background-color: #FFF;
+    border: solid 2px rgb(78, 77, 100);
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 120px;
+    
+
+}
+
+td{
+    text-align: center;
+    padding: 5px 0px;
+    /* background-color: #FFF; */
+    border: solid 3px rgb(118, 118, 124);
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 120px;
+    
+
+}
+
+
+#table tbody tr:nth-child(odd){
+    background-color: #FFF;
+}
+#table tbody tr:nth-child(even){
+    background-color: #CCC;
+}
+
+
+

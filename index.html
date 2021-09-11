@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="/css/index.css"> 
+   <script defer src="/js/index.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="dateField">
+        <label for="">Data</label>
+        <input type="text" id="date" placeholder="00/00/00" data-mask="00/00/0000" />
+    </div>
+
+    <form action="">
+        <div class="container">
+            <div class="unit">
+                <label for="">Ent manhã</label>
+                <input type="text" id="entradaManha" placeholder="00:00" data-mask="00:00">
+            </div>
+            
+            <div class="unit">
+                <label for="">Sai manhã</label>
+                <input type="text" id="saidaManha" placeholder="00:00" data-mask="00:00">
+            </div>
+
+            <div class="unit">
+                <label for="">Ent tarde</label>
+                <input type="text" id="entradaTarde" placeholder="00:00" data-mask="00:00">
+            </div>
+           
+            <div class="unit">
+                <label for="">Sai Tarde</label>
+                <input type="text" id="saidaTarde" placeholder="00:00" data-mask="00:00">
+            </div>
+
+            <div class="unit">
+                
+            </div>
+        </div>
+    </form>
+    <input type="button" class="add" value="Adicionar" onclick="addElements()"/>
+
+
+    <table id="table">
+        
+       
+    </table>
+
+    <script src="/jquery-3.6.0.min.js"></script>
+    <script src="/jquery.mask.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+           $('#table tr:odd').css('background-color', '#ccc');
+           $('#table tr:even').css('background-color', '#fff');  
+        });
+        </script>
+</body>
+</html>
