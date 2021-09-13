@@ -31,7 +31,7 @@ function setElements(event,id,nextElement){
 }
 
 function clearElements(){
-    evtDate.value = ''
+    
     evtStartMorn.value = ''
     evtExitMorn.value = ''
     evtStartAfter.value = ''
@@ -57,9 +57,11 @@ function addElements(){
                 evtExitAfter.value
             ]
         )
-        clearElements()
+        
         console.log(register)
         ShowElements()
+        setNewDate()
+        clearElements()
     }else{
         alert('Peencha todos horários')
     }
@@ -104,3 +106,55 @@ $("#btnExport").click(function(e) {
     a.click();
     e.preventDefault();
   });
+
+
+  function setBackgroud(id){
+      console.log(id)
+      let body = document.getElementById("body")
+      body.style.backgroundColor = `${id}`
+      
+  }
+
+
+  function setNewDate(){
+
+    
+    let currentDate = new Date(getUsFormat(evtDate.value))
+
+    let newdate = new Date(currentDate.setDate(currentDate.getDate()+2))
+    console.log(newdate)
+    evtDate.value = getBrFormat(newdate)
+
+  }
+
+  function getUsFormat(dateBr){
+
+    let day = dateBr.substring(0,2)
+    let month = dateBr.substring(3,5)
+    let year = dateBr.substring(6)
+    let newDate = `${year}-${month}-${day}`
+    console.log('Us format: ', newDate)
+
+    return newDate
+
+  }
+  
+  function getBrFormat(dateUs){
+
+    let date = new Date(dateUs)
+    let year = date.getFullYear()
+    let month = date.getMonth()+1
+    let day = date.getDate()
+    let newDate = `${fillnumber(day)}/${fillnumber(month)}/${year}`
+
+
+
+    return newDate
+
+  }
+
+  function fillnumber(number){
+
+    return number < 10 ? `0${number}`: number
+
+  }
