@@ -15,6 +15,7 @@ setElements(evtExitAfter,"saidaTarde",evtExitAfter)
 
 
 function setElements(event,id,nextElement){
+
     event.addEventListener("keyup", (event) => {
         let el = document.getElementById(id).value
         
@@ -26,9 +27,12 @@ function setElements(event,id,nextElement){
            }
         }
     
-    });
+    })
     
 }
+
+
+
 
 function clearElements(){
     
@@ -40,6 +44,7 @@ function clearElements(){
 }
 
 function addElements(){
+
     if(
         evtDate.value.length == 10 &&
         evtStartMorn.value.length == 5 &&
@@ -54,7 +59,8 @@ function addElements(){
                 evtStartMorn.value,
                 evtExitMorn.value,
                 evtStartAfter.value,
-                evtExitAfter.value
+                evtExitAfter.value,
+                getExtraHour()
             ]
         )
         
@@ -71,12 +77,13 @@ function addElements(){
 
 
 function ShowElements(){
+
     let table = document.getElementById('table')
-    table.innerHTML = "<tr><th>Qtde</th><th>Data</th><th>Ent Manha</th><th>Sai Manha</th><th>Ent Tarde</th><th>Sai Tarde</th></tr>"
+    table.innerHTML = "<tr><th>Qtde</th><th>Data</th><th>Ent Manha</th><th>Sai Manha</th><th>Ent Tarde</th><th>Sai Tarde</th><th>Saldo hora</th></tr>"
     
     for(let x = 0; x < register.length; x++){
         let tr = table.insertRow()
-        for(let y = 0; y < 6; y++){
+        for(let y = 0; y < 7; y++){
                     
           let cell = tr.insertCell()   
           let item = document.createTextNode(register[x][y])      
@@ -90,14 +97,13 @@ function ShowElements(){
 
 
 $("#btnExport").click(function(e) {
-    console.log('teste')
+
     let nameEmployee = document.getElementById('employee').value
     let a = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel';
     let table_div = document.getElementById('dvData');
     let table_html = table_div.outerHTML.replace(/ /g, '%20');
     a.href = data_type + ', ' + table_html;
-    console.log('name: ',nameEmployee)
     if(nameEmployee != ''){
         a.download = `${nameEmployee}.xls`;
     }else{
@@ -105,7 +111,8 @@ $("#btnExport").click(function(e) {
     }
     a.click();
     e.preventDefault();
-  });
+  }
+  )
 
 
   function setBackgroud(id){
@@ -120,9 +127,7 @@ $("#btnExport").click(function(e) {
 
     
     let currentDate = new Date(getUsFormat(evtDate.value))
-
     let newdate = new Date(currentDate.setDate(currentDate.getDate()+2))
-    console.log(newdate)
     evtDate.value = getBrFormat(newdate)
 
   }
@@ -133,7 +138,6 @@ $("#btnExport").click(function(e) {
     let month = dateBr.substring(3,5)
     let year = dateBr.substring(6)
     let newDate = `${year}-${month}-${day}`
-    console.log('Us format: ', newDate)
 
     return newDate
 
@@ -147,8 +151,6 @@ $("#btnExport").click(function(e) {
     let day = date.getDate()
     let newDate = `${fillnumber(day)}/${fillnumber(month)}/${year}`
 
-
-
     return newDate
 
   }
@@ -156,5 +158,67 @@ $("#btnExport").click(function(e) {
   function fillnumber(number){
 
     return number < 10 ? `0${number}`: number
+
+  }
+
+ function getExtraHour(){
+
+    const defaultJorney = 8
+    let morningPeriod = calculateThePeriod(evtStartMorn.value,evtExitMorn.value)
+    let afterPeriod = calculateThePeriod(evtStartAfter.value,evtExitAfter.value)
+    let currentJorney = morningPeriod+afterPeriod
+    let hours = Math.floor((currentJorney / (1000 * 60 * 60)) % 24)
+    let minutes = Math.floor((currentJorney / (1000 * 60)) % 60)
+      
+    console.log('hours: ',hours)
+    console.log('minuts: ',minutes)
+
+    if(hours > defaultJorney){
+
+        return `${fillnumber(hours-defaultJorney)}:${fillnumber(minutes)}`
+
+    }else if(hours == defaultJorney && minutes != 0){
+
+        return `00:${fillnumber(minutes)}`
+
+    }else if(defaultJorney - hours == 1 && minutes != 0){
+
+        let min = 60 - minutes
+        return `-00:${fillnumber(min)}`
+
+    }else if(defaultJorney - hours == 1 && minutes == 0){
+
+        return `-${fillnumber(defaultJorney-hours)}:${fillnumber(minutes)}`
+
+    }else if(defaultJorney - hours > 1){
+
+        let min = 60 - minutes
+        let hour = defaultJorney - hours
+
+        if(minutes != 0){
+            
+            hour = hour-1
+
+        }
+
+        return `-${fillnumber(hour)}:${fillnumber(min == 60?0:min)}`
+    }else{
+        return `00:00`
+    }
+    
+
+
+ }
+
+
+  function calculateThePeriod(init,fin) {
+    
+    let hrIni = new Date(getUsFormat(evtDate.value));
+    hrIni.setHours(init.substring(0,2),init.substring(3,5),00);
+    let hrF = new Date(getUsFormat(evtDate.value));
+    hrF.setHours(fin.substring(0,2),fin.substring(3,5),00);
+    let res = hrF-hrIni
+    
+    return res    
 
   }

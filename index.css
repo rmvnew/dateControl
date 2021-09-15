@@ -15,6 +15,10 @@ h1{
     margin: 0px;
 }
 
+.actions{
+    display: flex;
+}
+
 .back{
 
     margin: 10px 10px;
@@ -104,6 +108,17 @@ label{
     font-size: 1.6rem;
     font-weight: bold;
     background: linear-gradient(to bottom, #7c949b 0%,#333141 100% );
+}
+.btn-home{
+    width: 250px;
+    margin: 10px 0px 0px 25px;
+    border: solid 1px #FFF;
+    border-radius: 10px;
+    height: 50px;
+    color: #FFF;
+    font-size: 1.6rem;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #1d333a 0%,#2a659c 100% );
 }
 
 
