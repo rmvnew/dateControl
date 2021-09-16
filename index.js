@@ -5,14 +5,111 @@ const evtStartMorn = document.getElementById("entradaManha")
 const evtExitMorn = document.getElementById("saidaManha")
 const evtStartAfter = document.getElementById("entradaTarde")
 const evtExitAfter = document.getElementById("saidaTarde")
-let register = []
+const btnAddElement = document.getElementById("addElement")
+const btnEdit = document.getElementById("btnEdit")
+const btnkillEdit = document.getElementById("btnKillEdit")
 
+const typesOperation = {
+    SHOW: "show",
+    HIDE: "hide"
+}
+
+let register = []
+let table = document.getElementById('table')
+let rIndex
+let count
 
 setElements(evtStartMorn,"entradaManha",evtExitMorn)
 setElements(evtExitMorn,"saidaManha",evtStartAfter)
 setElements(evtStartAfter,"entradaTarde",evtExitAfter)
 setElements(evtExitAfter,"saidaTarde",evtExitAfter)
 
+function selectElements(){
+
+    for (let index = 1; index < table.rows.length; index++){
+
+        table.rows[index].onclick = function(){
+            rIndex = this.rowIndex
+            console.log('index da linha: ',rIndex)
+            evtDate.value = this.cells[1].innerHTML
+            evtStartMorn.value = this.cells[2].innerHTML
+            evtExitMorn.value = this.cells[3].innerHTML
+            evtStartAfter.value = this.cells[4].innerHTML
+            evtExitAfter.value = this.cells[5].innerHTML
+            showEdit(typesOperation.SHOW)
+        }
+        
+    }
+
+}
+
+function showEdit(typesOperation){
+
+    if(typesOperation == 'show'){
+        btnEdit.style.display = 'block'
+        btnkillEdit.style.display = 'block'
+        btnAddElement.style.display = 'none'
+    }else{
+        btnEdit.style.display = 'none'
+        btnkillEdit.style.display = 'none'
+        btnAddElement.style.display = 'block'
+    }
+
+}
+
+function checkData(){
+
+    if(evtDate.value.length == 10 &&
+        evtStartMorn.value.length == 5 &&
+        evtExitMorn.value.length == 5 &&
+        evtStartAfter.value.length == 5 &&
+        evtExitAfter.value.length == 5)
+    {
+
+        return true
+
+    }else{
+
+        return false
+
+    }
+
+}
+
+function deleteElement(){
+
+    register.splice(rIndex-1,1)
+    showEdit(typesOperation.HIDE)
+    setDateAfterEdit()
+    clearElements()
+    ShowElements()
+
+}
+
+function editSelectedElement(){
+
+    if(rIndex != undefined && checkData){
+
+        table.rows[rIndex].cells[1].innerHTML = evtDate.value
+        table.rows[rIndex].cells[2].innerHTML = evtStartMorn.value
+        table.rows[rIndex].cells[3].innerHTML = evtExitMorn.value
+        table.rows[rIndex].cells[4].innerHTML = evtStartAfter.value
+        table.rows[rIndex].cells[5].innerHTML = evtExitAfter.value
+        table.rows[rIndex].cells[6].innerHTML = getExtraHour()
+        showEdit(typesOperation.HIDE)
+        setDateAfterEdit()
+        clearElements()
+        
+    }
+
+}
+
+function setDateAfterEdit(){
+
+    let tableSize = table.rows.length
+    evtDate.value = table.rows[tableSize-1].cells[1].innerHTML
+   setNewDate()
+}
 
 function setElements(event,id,nextElement){
 
@@ -31,11 +128,9 @@ function setElements(event,id,nextElement){
     
 }
 
-
-
-
 function clearElements(){
     
+    rIndex = undefined
     evtStartMorn.value = ''
     evtExitMorn.value = ''
     evtStartAfter.value = ''
@@ -45,16 +140,10 @@ function clearElements(){
 
 function addElements(){
 
-    if(
-        evtDate.value.length == 10 &&
-        evtStartMorn.value.length == 5 &&
-        evtExitMorn.value.length == 5 &&
-        evtStartAfter.value.length == 5 &&
-        evtExitAfter.value.length == 5
-    ){
+    if(checkData){
         register.push(
              [
-                register.length+1, 
+                getCount(), 
                 evtDate.value,
                 evtStartMorn.value,
                 evtExitMorn.value,
@@ -72,13 +161,21 @@ function addElements(){
         alert('Peencha todos horários')
     }
 
+}
+
+function getCount(){
+
+    if(register.length == 0){
+        count = 1
+        return count
+    }else{
+        return ++count
+    }
 
 }
 
-
 function ShowElements(){
-
-    let table = document.getElementById('table')
+    
     table.innerHTML = "<tr><th>Qtde</th><th>Data</th><th>Ent Manha</th><th>Sai Manha</th><th>Ent Tarde</th><th>Sai Tarde</th><th>Saldo hora</th></tr>"
     
     for(let x = 0; x < register.length; x++){
@@ -92,9 +189,9 @@ function ShowElements(){
                         
     }
 
+    selectElements()
+   
 }
-
-
 
 $("#btnExport").click(function(e) {
 
@@ -114,7 +211,6 @@ $("#btnExport").click(function(e) {
   }
   )
 
-
   function setBackgroud(id){
       console.log(id)
       let body = document.getElementById("body")
@@ -122,10 +218,8 @@ $("#btnExport").click(function(e) {
       
   }
 
-
   function setNewDate(){
 
-    
     let currentDate = new Date(getUsFormat(evtDate.value))
     let newdate = new Date(currentDate.setDate(currentDate.getDate()+2))
     evtDate.value = getBrFormat(newdate)
@@ -206,10 +300,7 @@ $("#btnExport").click(function(e) {
         return `00:00`
     }
     
-
-
  }
-
 
   function calculateThePeriod(init,fin) {
     
