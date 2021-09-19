@@ -8,11 +8,14 @@ const evtExitAfter = document.getElementById("saidaTarde")
 const btnAddElement = document.getElementById("addElement")
 const btnEdit = document.getElementById("btnEdit")
 const btnkillEdit = document.getElementById("btnKillEdit")
+const input = document.getElementById("getFile")
+const employee = document.getElementById("employee")
 
 const typesOperation = {
     SHOW: "show",
     HIDE: "hide"
 }
+
 
 let register = []
 let table = document.getElementById('table')
@@ -23,6 +26,9 @@ setElements(evtStartMorn,"entradaManha",evtExitMorn)
 setElements(evtExitMorn,"saidaManha",evtStartAfter)
 setElements(evtStartAfter,"entradaTarde",evtExitAfter)
 setElements(evtExitAfter,"saidaTarde",evtExitAfter)
+// readTxt()
+
+
 
 function selectElements(){
 
@@ -210,6 +216,111 @@ $("#btnExport").click(function(e) {
     e.preventDefault();
   }
   )
+
+  //ler txt
+
+  
+//  function readTxt(){
+ 
+//     input.addEventListener('change',()=>{
+//         let files = input.files
+  
+//        if(files.length == 0) return
+       
+//             const file = files[0]
+  
+//             let reader = new FileReader()
+  
+//             reader.onload = (e) =>{
+//                 const file2 = e.target.result
+//                 console.log('file read: ',file2)
+//             }
+  
+//             reader.onerror = (e) => alert(e.target.error.name)
+  
+//             reader.readAsText(file)
+        
+//     })
+
+//     console.log('passou')
+
+//  }
+  
+function readTextFile(files){
+
+         const file = files[0]
+  
+            let reader = new FileReader()
+  
+            reader.onload = (e) =>{
+                const file = e.target.result
+                // console.log('file read: ',file2)
+                filterDataFiles(file)
+            }
+  
+            reader.onerror = (e) => alert(e.target.error.name)
+  
+            reader.readAsText(file)
+
+}
+
+function filterDataFiles(data){
+
+    register = []
+    let dataObject = data.split(',')
+    console.log(dataObject.length)
+
+    for(let i = 1; i < dataObject.length; i=i+6){
+
+        // console.log(dataObject[i])
+
+        register.push([
+            getCount(),
+            dataObject[i],
+            dataObject[i+1],
+            dataObject[i+2],
+            dataObject[i+3],
+            dataObject[i+4],
+            dataObject[i+5].substring(0,5)
+
+        ])
+
+    }
+
+    console.log(register)
+    ShowElements()
+}
+
+
+
+
+  //escrever txt
+
+
+
+
+  $("#save-txt").click(function(){
+      if(register.length != 0){
+        let blob = new Blob(register,{
+            type: "text/plain;charset=utf-8"
+        })
+        saveAs(blob, employee.value == ''?`Arquivo - ${getCurrentHour()}`:`${employee.value} - ${getCurrentHour()}`)
+      }else{
+          alert("Para salvar deve ter dados na tabela!!")
+      }
+  })
+
+  function getCurrentHour(){
+      let date = new Date()
+      let currentDay = date.getDate()
+      let month = date.getMonth()
+      let hour = date.getHours()
+      let min = date.getMinutes()
+      let sec = date.getSeconds()
+      return `${fillnumber(currentDay)}/${fillnumber(month+1)} @ ${fillnumber(hour)}-${fillnumber(min)}-${fillnumber(sec)}`
+  }
+
+
 
   function setBackgroud(id){
       console.log(id)

@@ -27,12 +27,22 @@
             <input type="text" id="employee" placeholder="Nome do Funcionário aqui">
         </div>
 
+        <div class="choose">
+            <input type="button" id="save-txt" class="label-input" value="Salvar" />
+            <!-- <button id="readFile" class="exp-action" onclick="document.getElementById('getFile').click()">Buscar</button> -->
+            
+            <!-- <input type='file' id="getFile" style="display:none">  -->
+            <label class="label-input" for="input">Buscar</label>
+            <input type="file" id="input" onchange="readTextFile(this.files)">
+        </div>
+
         <div class="container">
            
             <div class="dateField">
                 <label for="">Data</label>
                 <input type="text" id="date" placeholder="00/00/0000" data-mask="00/00/0000" />
             </div>
+
             <div class="unit">
                 <label for="">Ent manhã</label>
                 <input type="text" id="entradaManha" placeholder="00:00" data-mask="00:00">
@@ -93,13 +103,14 @@
     </div>
 
     
-    <script src="/jquery-3.6.0.min.js"></script>
-    <script src="/jquery.mask.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="jquery.mask.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
            $('#table tr:odd').css('background-color', '#ccc');
            $('#table tr:even').css('background-color', '#fff');  
         });
         </script>
+    <script src="FileSaver.js"></script>    
 </body>
 </html>
