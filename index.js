@@ -10,25 +10,62 @@ const btnEdit = document.getElementById("btnEdit")
 const btnkillEdit = document.getElementById("btnKillEdit")
 const input = document.getElementById("getFile")
 const employee = document.getElementById("employee")
+const extra = document.getElementById("extra")
+const delay = document.getElementById("delay")
+const saturday = document.getElementById("check-Saturday")
+const divSat = document.getElementById("sat")
+const hourWeek = document.getElementById("hour-week")
+const hourSaturday = document.getElementById("hour-sat")
 
 const typesOperation = {
     SHOW: "show",
     HIDE: "hide"
 }
 
+const week = [
+    'Domingo', 
+    'Segunda',
+    'Terça',
+    'Quarta',
+    'Quinta',
+    'Sexta',
+    'Sábado'
+]
+
 
 let register = []
 let table = document.getElementById('table')
 let rIndex
 let count
+let saturdeyWorked = false
 
 setElements(evtStartMorn,"entradaManha",evtExitMorn)
 setElements(evtExitMorn,"saidaManha",evtStartAfter)
 setElements(evtStartAfter,"entradaTarde",evtExitAfter)
 setElements(evtExitAfter,"saidaTarde",evtExitAfter)
-// readTxt()
 
 
+
+saturday.addEventListener('change', function(){
+    if(this.checked){
+        divSat.style.display = 'block'
+        saturdeyWorked = true
+    }else{
+        divSat.style.display = 'none'
+        saturdeyWorked = false
+    }
+})
+
+//setando valor horas 
+
+$(function(){
+    let hourW = 8
+    let hourS = 4
+    // $("#hour-week").val(hourWeek)
+    hourWeek.value = hourW
+    // $("#hour-sat").val(hourSaturday)
+    hourSaturday.value = hourS
+})
 
 function selectElements(){
 
@@ -36,12 +73,11 @@ function selectElements(){
 
         table.rows[index].onclick = function(){
             rIndex = this.rowIndex
-            console.log('index da linha: ',rIndex)
             evtDate.value = this.cells[1].innerHTML
-            evtStartMorn.value = this.cells[2].innerHTML
-            evtExitMorn.value = this.cells[3].innerHTML
-            evtStartAfter.value = this.cells[4].innerHTML
-            evtExitAfter.value = this.cells[5].innerHTML
+            evtStartMorn.value = this.cells[3].innerHTML
+            evtExitMorn.value = this.cells[4].innerHTML
+            evtStartAfter.value = this.cells[5].innerHTML
+            evtExitAfter.value = this.cells[6].innerHTML
             showEdit(typesOperation.SHOW)
         }
         
@@ -65,11 +101,18 @@ function showEdit(typesOperation){
 
 function checkData(){
 
-    if(evtDate.value.length == 10 &&
+   
+
+    if((evtDate.value.length == 10 &&
         evtStartMorn.value.length == 5 &&
         evtExitMorn.value.length == 5 &&
         evtStartAfter.value.length == 5 &&
-        evtExitAfter.value.length == 5)
+        evtExitAfter.value.length == 5)|| (
+        evtDate.value.length == 10 &&
+        evtStartMorn.value.length == 5 &&
+        evtExitMorn.value.length == 5 && 
+        saturdeyWorked &&
+        isSaturday()))
     {
 
         return true
@@ -92,23 +135,7 @@ function deleteElement(){
 
 }
 
-function editSelectedElement(){
 
-    if(rIndex != undefined && checkData){
-
-        table.rows[rIndex].cells[1].innerHTML = evtDate.value
-        table.rows[rIndex].cells[2].innerHTML = evtStartMorn.value
-        table.rows[rIndex].cells[3].innerHTML = evtExitMorn.value
-        table.rows[rIndex].cells[4].innerHTML = evtStartAfter.value
-        table.rows[rIndex].cells[5].innerHTML = evtExitAfter.value
-        table.rows[rIndex].cells[6].innerHTML = getExtraHour()
-        showEdit(typesOperation.HIDE)
-        setDateAfterEdit()
-        clearElements()
-        
-    }
-
-}
 
 function setDateAfterEdit(){
 
@@ -146,20 +173,21 @@ function clearElements(){
 
 function addElements(){
 
-    if(checkData){
+    if(checkData()){
         register.push(
              [
                 getCount(), 
                 evtDate.value,
+                getDayOfWeek(),
                 evtStartMorn.value,
                 evtExitMorn.value,
                 evtStartAfter.value,
                 evtExitAfter.value,
-                getExtraHour()
+                getExtraHour().substring(0,1) != '-'?getExtraHour():'00:00',
+                getExtraHour().substring(0,1) == '-'?getExtraHour().substring(1):'00:00'
             ]
         )
         
-        console.log(register)
         ShowElements()
         setNewDate()
         clearElements()
@@ -167,6 +195,41 @@ function addElements(){
         alert('Peencha todos horários')
     }
 
+}
+
+function editSelectedElement(){
+
+    if(rIndex != undefined && checkData()){
+
+       register[rIndex-1] =
+           [
+            rIndex,
+           evtDate.value,
+           getDayOfWeek(),
+           evtStartMorn.value,
+           evtExitMorn.value,
+           evtStartAfter.value,
+           evtExitAfter.value,
+           getExtraHour().substring(0,1) != '-'?getExtraHour():'00:00',
+           getExtraHour().substring(0,1) == '-'?getExtraHour().substring(1):'00:00'
+           ]
+        
+        showEdit(typesOperation.HIDE)
+        setDateAfterEdit()
+        ShowElements()
+        clearElements()
+        
+    }
+
+}
+
+function getDayOfWeek(){
+    let day = evtDate.value.substring(0,2)
+    let month = evtDate.value.substring(3,5)
+    let year = evtDate.value.substring(6)
+
+    let currentDate = new Date(`${month}/${day}/${year}`)
+    return week[currentDate.getDay()]
 }
 
 function getCount(){
@@ -182,22 +245,80 @@ function getCount(){
 
 function ShowElements(){
     
-    table.innerHTML = "<tr><th>Qtde</th><th>Data</th><th>Ent Manha</th><th>Sai Manha</th><th>Ent Tarde</th><th>Sai Tarde</th><th>Saldo hora</th></tr>"
+    let positiveHour = 0
+    let positiveMinuts = 0
+    let negativeHour = 0
+    let negativeMinuts = 0
+
+    table.innerHTML = "<tr><th>Qtde</th><th>Data</th><th>Dia semana</th><th>Ent Manha</th><th>Sai Manha</th><th>Ent Tarde</th><th>Sai Tarde</th><th>Saldo</th><th>Atraso</th></tr>"
     
     for(let x = 0; x < register.length; x++){
         let tr = table.insertRow()
-        for(let y = 0; y < 7; y++){
+        for(let y = 0; y < 9; y++){
                     
           let cell = tr.insertCell()   
           let item = document.createTextNode(register[x][y])      
-          cell.appendChild(item)                              
+          cell.appendChild(item)
+          
+          if(y == 8){
+              if(register[x][7] == '00:00'){
+                const {hours, minuts} = sumHour(register[x][1],register[x][8])
+                negativeHour = negativeHour + hours
+                negativeMinuts = negativeMinuts + minuts
+            }else{
+                const {hours, minuts} = sumHour(register[x][1],register[x][7])
+                positiveHour = positiveHour + hours
+                positiveMinuts = positiveMinuts + minuts
+            }
+          }
+          
         }
                         
     }
 
+    extra.innerHTML = asempleData(positiveHour,positiveMinuts)
+    delay.innerHTML = asempleData(negativeHour,negativeMinuts)
+
     selectElements()
    
 }
+
+function sumHour(currentDate,hour){
+
+    let day = currentDate.substring(0,2)
+    let month = currentDate.substring(3,5)
+    let year = currentDate.substring(6)
+
+    let newDate = new Date(`${month}/${day}/${year}`);
+    newDate.setHours(hour.substring(0,2),hour.substring(3,5),00)
+
+    const hours = newDate.getHours()
+    const minuts = newDate.getMinutes()
+
+    return data = {
+        hours,minuts
+    }
+
+  }
+
+  function asempleData(hData,mData){
+
+    let hour = hData
+    let min = mData
+    let modMin
+    
+    if(min > 60){
+
+        hour = hour + Math.trunc(min/60)
+        modMin = min%60
+    }
+
+
+    return `${fillnumber(hour)}:${fillnumber(modMin == undefined?min:modMin)}`
+
+
+    
+  }
 
 $("#btnExport").click(function(e) {
 
@@ -217,34 +338,7 @@ $("#btnExport").click(function(e) {
   }
   )
 
-  //ler txt
-
-  
-//  function readTxt(){
  
-//     input.addEventListener('change',()=>{
-//         let files = input.files
-  
-//        if(files.length == 0) return
-       
-//             const file = files[0]
-  
-//             let reader = new FileReader()
-  
-//             reader.onload = (e) =>{
-//                 const file2 = e.target.result
-//                 console.log('file read: ',file2)
-//             }
-  
-//             reader.onerror = (e) => alert(e.target.error.name)
-  
-//             reader.readAsText(file)
-        
-//     })
-
-//     console.log('passou')
-
-//  }
   
 function readTextFile(files){
 
@@ -254,7 +348,6 @@ function readTextFile(files){
   
             reader.onload = (e) =>{
                 const file = e.target.result
-                // console.log('file read: ',file2)
                 filterDataFiles(file)
             }
   
@@ -268,11 +361,9 @@ function filterDataFiles(data){
 
     register = []
     let dataObject = data.split(',')
-    console.log(dataObject.length)
 
-    for(let i = 1; i < dataObject.length; i=i+6){
+    for(let i = 1; i < dataObject.length; i=i+8){
 
-        // console.log(dataObject[i])
 
         register.push([
             getCount(),
@@ -281,23 +372,18 @@ function filterDataFiles(data){
             dataObject[i+2],
             dataObject[i+3],
             dataObject[i+4],
-            dataObject[i+5].substring(0,5)
+            dataObject[i+5],
+            dataObject[i+6],
+            dataObject[i+7].substring(0,5)
 
         ])
 
     }
 
-    console.log(register)
     ShowElements()
+    setDateAfterEdit()
+    clearElements()
 }
-
-
-
-
-  //escrever txt
-
-
-
 
   $("#save-txt").click(function(){
       if(register.length != 0){
@@ -323,7 +409,6 @@ function filterDataFiles(data){
 
 
   function setBackgroud(id){
-      console.log(id)
       let body = document.getElementById("body")
       body.style.backgroundColor = `${id}`
       
@@ -331,20 +416,20 @@ function filterDataFiles(data){
 
   function setNewDate(){
 
-    let currentDate = new Date(getUsFormat(evtDate.value))
-    let newdate = new Date(currentDate.setDate(currentDate.getDate()+2))
+    let currentDate = new Date(getDateWorked())
+    // let newdate = new Date(currentDate.setDate(currentDate.getDate()+2))
+    let newdate = new Date()
+
+    if(isFriday() && !saturdeyWorked){
+        newdate = new Date(currentDate.setDate(currentDate.getDate()+3))
+    }else if(isSaturday()){
+        newdate = new Date(currentDate.setDate(currentDate.getDate()+2))
+    }else{
+        newdate = new Date(currentDate.setDate(currentDate.getDate()+1))
+    }
+
+
     evtDate.value = getBrFormat(newdate)
-
-  }
-
-  function getUsFormat(dateBr){
-
-    let day = dateBr.substring(0,2)
-    let month = dateBr.substring(3,5)
-    let year = dateBr.substring(6)
-    let newDate = `${year}-${month}-${day}`
-
-    return newDate
 
   }
   
@@ -368,16 +453,21 @@ function filterDataFiles(data){
 
  function getExtraHour(){
 
-    const defaultJorney = 8
+    let defaultJorney = 0
+    
+    if(saturdeyWorked && isSaturday()){
+        defaultJorney = hourSaturday.value
+    }else{
+        defaultJorney = hourWeek.value
+    }
+
+
     let morningPeriod = calculateThePeriod(evtStartMorn.value,evtExitMorn.value)
     let afterPeriod = calculateThePeriod(evtStartAfter.value,evtExitAfter.value)
     let currentJorney = morningPeriod+afterPeriod
     let hours = Math.floor((currentJorney / (1000 * 60 * 60)) % 24)
     let minutes = Math.floor((currentJorney / (1000 * 60)) % 60)
       
-    console.log('hours: ',hours)
-    console.log('minuts: ',minutes)
-
     if(hours > defaultJorney){
 
         return `${fillnumber(hours-defaultJorney)}:${fillnumber(minutes)}`
@@ -388,7 +478,9 @@ function filterDataFiles(data){
 
     }else if(defaultJorney - hours == 1 && minutes != 0){
 
+       
         let min = 60 - minutes
+ 
         return `-00:${fillnumber(min)}`
 
     }else if(defaultJorney - hours == 1 && minutes == 0){
@@ -396,6 +488,8 @@ function filterDataFiles(data){
         return `-${fillnumber(defaultJorney-hours)}:${fillnumber(minutes)}`
 
     }else if(defaultJorney - hours > 1){
+
+       
 
         let min = 60 - minutes
         let hour = defaultJorney - hours
@@ -415,12 +509,52 @@ function filterDataFiles(data){
 
   function calculateThePeriod(init,fin) {
     
-    let hrIni = new Date(getUsFormat(evtDate.value));
+    let hrIni = new Date(getDateWorked());
     hrIni.setHours(init.substring(0,2),init.substring(3,5),00);
-    let hrF = new Date(getUsFormat(evtDate.value));
+    let hrF = new Date(getDateWorked());
     hrF.setHours(fin.substring(0,2),fin.substring(3,5),00);
     let res = hrF-hrIni
     
     return res    
 
   }
+
+
+  function isSaturday(){
+
+    let current = getDateWorked()
+
+    if(current.getDay() == 6){
+        return true
+    }else{
+        return false
+    }
+    
+
+  }
+  
+  function isFriday(){
+
+    let current = getDateWorked()
+
+    if(current.getDay() == 5){
+        return true
+    }else{
+        return false
+    }
+    
+  }
+  
+
+
+
+  function getDateWorked(){
+
+    let day = evtDate.value.substring(0,2)
+    let month = evtDate.value.substring(3,5)
+    let year = evtDate.value.substring(6)
+
+    return new Date(`${fillnumber(month)}/${fillnumber(day)}/${year}`)
+
+  }
+  

@@ -5,103 +5,177 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-   <link rel="stylesheet" href="index.css"> 
+   
    <script defer src="index.js" type="text/javascript"></script>
+   <link rel="stylesheet" href="bootstrap.min.css">
+   <link rel="stylesheet" href="index.css"> 
 </head>
 <body id="body">
 
-    <div class="head">
-        <input type="button"  class="back" style="background-color: #888;" onclick="setBackgroud('#888')"/>
-        <input type="button"  class="back" style="background-color: #444;" onclick="setBackgroud('#444')"/>
-        <input type="button"  class="back" style="background-color: rgb(35,35,36);" onclick="setBackgroud('rgb(35,35,36)')"/>
-        
-        
-    </div>
-    <h1>Ponto Digital</h1>
+  
+    
     
 
-    <form action="">
+
+    <div class="container">
+
+        <h1>Ponto Digital</h1>
+
+        <div class="row">
+            <div class="col">
+                <div class="card-control">
+                    <div>
+                     <label><input type="checkbox" id="check-Saturday"/> &nbsp&nbsp&nbspTrabalha Sábado</label>
+                    </div>
+         
+                     <div>
+                         <label for="">Semana</label>
+                         <select class="hours-select" name="hour" id="hour-week">
+         
+                             <option value="3">3</option>
+                             <option value="4">4</option>
+                             <option value="5">5</option>
+                             <option value="6">6</option>
+                             <option value="7">7</option>
+                             <option value="8">8</option>
+                             <option value="9">9</option>
+         
+                         </select>
+                     </div>
+                     
+                     <div id="sat" class="sat">
+                         <label for="">Sábado</label>
+                         <select class="hours-select" name="hour" id="hour-sat">
+         
+                             <option value="3">3</option>
+                             <option value="4">4</option>
+                             <option value="5">5</option>
+                             <option value="6">6</option>
+                             <option value="7">7</option>
+                             <option value="8">8</option>
+                             <option value="9">9</option>
+         
+                         </select>
+                     </div>
+                     
+                 </div>
+            </div>
+            <div class="col">
+                <div class="card-box">
+                    <div class="pos">
+                        <label for="">Hora extra</label>
+                        <h3 id="extra">-</h3>
+                    </div>
+                    <div class="neg">
+                        <label for="">Atraso</label>
+                        <h3 id="delay">-</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="choose">
+                    <div class="btn-choose">
+                        <input type="button" id="save-txt" class="btn btn-warning btn-lg" value="Salvar" />
+                        <label class="btn btn-warning btn-lg" for="input">Buscar</label>
+                    </div>
+                    <div>
+                        <input type="file" id="input" onchange="readTextFile(this.files)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+               
         
-        <div class="nameEmployee">
-            <label for="">Nome do funcionário</label>
-            <input type="text" id="employee" placeholder="Nome do Funcionário aqui">
+                   <div class="text-black">
+                    <div class="nameEmployee">
+                        <label for="">Nome do funcionário</label>
+                        <input type="text" id="employee" placeholder="Nome do Funcionário aqui">
+                    </div>
+                    
+                    <div class="d-flex flex-row bd-highlight mb-3">
+                        <div class="dateField">
+                            <label for="">Data</label>
+                            <input type="text" id="date" placeholder="00/00/0000" data-mask="00/00/0000" />
+                        </div>
+            
+                        <div class="unit">
+                            <label for="">Ent manhã</label>
+                            <input type="text" id="entradaManha" placeholder="00:00" data-mask="00:00">
+                        </div>
+                        
+                        <div class="unit">
+                            <label foverflow: auto;or="">Sai manhã</label>
+                            <input type="text" id="saidaManha" placeholder="00:00" data-mask="00:00">
+                        </div>
+            
+                        <div class="unit">
+                            <label for="">Ent tarde</label>
+                            <input type="text" id="entradaTarde" placeholder="00:00" data-mask="00:00">
+                        </div>
+                       
+                        <div class="unit">
+                            <label for="">Sai Tarde</label>
+                            <input type="text" id="saidaTarde" placeholder="00:00" data-mask="00:00">
+                        </div>
+            
+                        <div class="unit">
+                            
+                        </div>
+                   
+                    </div>
+                   </div>
+        
+            </div>
         </div>
 
-        <div class="choose">
-            <input type="button" id="save-txt" class="label-input" value="Salvar" />
-            <!-- <button id="readFile" class="exp-action" onclick="document.getElementById('getFile').click()">Buscar</button> -->
-            
-            <!-- <input type='file' id="getFile" style="display:none">  -->
-            <label class="label-input" for="input">Buscar</label>
-            <input type="file" id="input" onchange="readTextFile(this.files)">
-        </div>
-
-        <div class="container">
-           
-            <div class="dateField">
-                <label for="">Data</label>
-                <input type="text" id="date" placeholder="00/00/0000" data-mask="00/00/0000" />
-            </div>
-
-            <div class="unit">
-                <label for="">Ent manhã</label>
-                <input type="text" id="entradaManha" placeholder="00:00" data-mask="00:00">
-            </div>
-            
-            <div class="unit">
-                <label for="">Sai manhã</label>
-                <input type="text" id="saidaManha" placeholder="00:00" data-mask="00:00">
-            </div>
-
-            <div class="unit">
-                <label for="">Ent tarde</label>
-                <input type="text" id="entradaTarde" placeholder="00:00" data-mask="00:00">
-            </div>
-           
-            <div class="unit">
-                <label for="">Sai Tarde</label>
-                <input type="text" id="saidaTarde" placeholder="00:00" data-mask="00:00">
-            </div>
-
-            <div class="unit">
+        <div class="row">
+            <div class="col">
                 
+                    <div class="actions">
+                        <input type="button" class="btn btn-lg btn-primary" value="Adicionar" id="addElement" onclick="addElements()" />
+                        <input type="button" id="btnExport" class="btn btn-lg btn-success" value="Exportar Excel" />
+                        <input type="button" id="btnEdit" class="exp-hiden" value="Editar" onclick="editSelectedElement()" />
+                        <input type="button" id="btnKillEdit" class="exp-hiden" value="Detelar" onclick="deleteElement()" />
+                    </div>
+                    
             </div>
         </div>
-    </form>
 
-    <!-- <form action="">
-        <div class="edit">
-            <div class="element">
-                <label for="">Elemento</label>
-                <input type="text" id="element" placeholder="Número">
-            </div>
-            <div class="element">
-                <label for="">Editar</label>
-                <input type="checkbox">
+        <div class="row">
+            <div class="col">
+                <div id="dvData">
+                    <table id="table">
+                    
+                   
+                    </table>
+                
+                </div>
             </div>
         </div>
-    </form> -->
-    
-    <div class="actions">
-        <input type="button" class="add" value="Adicionar" id="addElement" onclick="addElements()" />
-        <input type="button" id="btnExport" class="exp" value="Exportar Excel" />
-        <input type="button" id="btnEdit" class="exp-hiden" value="Editar" onclick="editSelectedElement()" />
-        <input type="button" id="btnKillEdit" class="exp-hiden" value="Detelar" onclick="deleteElement()" />
-        <!-- <form action="http://www.goiascontabil.com">
-            <input type="submit" class="btn-home" value="Principal"/>
-        </form> -->
-        
-        
+
+
+
+
     </div>
 
-    <div id="dvData">
-        <table id="table">
-        
-       
-        </table>
-    
-    </div>
 
+
+
+  </div>
+   
+
+  
+
+    
+    
+    <div class="footer">
+        
+            <h3>Desenvolvido por&nbsp Ricardo</h3>
+        
+    </div>
     
     <script src="jquery-3.6.0.min.js"></script>
     <script src="jquery.mask.js"></script>
@@ -111,6 +185,7 @@
            $('#table tr:even').css('background-color', '#fff');  
         });
         </script>
-    <script src="FileSaver.js"></script>    
+    <script src="FileSaver.js"></script>   
+    <script src="bootstrap.min.js"></script>
 </body>
 </html>

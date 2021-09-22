@@ -15,9 +15,7 @@ h1{
     margin: 0px;
 }
 
-.actions{
-    display: flex;
-}
+
 
 .back{
 
@@ -36,10 +34,7 @@ h1{
     animation-duration: 2s;
 }
 
-.container{
-    display: flex;
-    margin-bottom: 20px;
-}
+
 
 input{
     text-align: center;
@@ -51,12 +46,9 @@ input{
     border: solid 2px rgb(185, 185, 185);
 }
 
-.dateField input{
-    width: 150px;
-}
+
 
 .dateField label{
-    width: 150px;
     text-align: center;
 }
 
@@ -114,13 +106,17 @@ label{
     display: none;
     width: 250px;
     margin: 10px 0px 0px 25px;
-    border: solid 1px #FFF;
-    border-radius: 10px;
+    border: none;
+    border-radius: 5px;
     height: 50px;
     color: #FFF;
-    font-size: 1.6rem;
-    font-weight: bold;
-    background: linear-gradient(to bottom, #7c949b 0%,#333141 100% );
+    font-size: 1rem;
+    
+    background-color: #4a494b;
+}
+
+.exp-hiden:hover{
+    background-color: #403f41;
 }
 
 .exp-action{
@@ -136,12 +132,7 @@ label{
     background: linear-gradient(to bottom, #2b2b42 0%,#6956e6 100% );
 }
 
-.choose{
 
-    display: flex;
-    margin: 20px 0px 20px 0px;
-    
-}
 .btn-home{
     width: 250px;
     margin: 10px 0px 0px 25px;
@@ -158,7 +149,19 @@ label{
 /* tabela */
 
 table{
-    margin: 25px 0px 0px 25px;
+    align-items: center;
+    width: 100%;
+    margin: 25px 25px;
+    display: block;
+    margin-bottom: 150px;
+   
+}
+
+tbody {
+    height: 600px;
+    display: inline-block;
+    width: 100%;
+    overflow: auto;
 }
 
 th{
@@ -176,11 +179,10 @@ th{
 td{
     text-align: center;
     padding: 5px 0px;
-    /* background-color: #FFF; */
     border: solid 3px rgb(118, 118, 124);
     font-weight: bold;
     font-size: 1.2rem;
-    width: 120px;
+    width: 150px;
     
 
 }
@@ -233,11 +235,13 @@ tr{
     transition:all .25s ease-in-out
 }
 
-tr:hover{
-    background-color: #AAA;
+
+
+tr:hover td{ 
+    color: #FFF;
+    background:rgb(54, 53, 65); 
     cursor: pointer;
 }
-
 
 #input{
    display: none;
@@ -245,20 +249,224 @@ tr:hover{
 
 .label-input{
 
-    padding: 20px 10px;
+    padding: 20px 0px;
     
     text-align: center;
-    /* display: block; */
-    /* margin-top: 10px; */
-  /* max-height: 10px; */
-    /* text-align: center; */
-   
-    width: 250px;
-    /* margin: 10px 0px 25px 25px; */
+    
+    width: 300px;
     border: solid 1px #FFF;
     border-radius: 10px;
     color: #FFF;
     font-size: 1.6rem;
     font-weight: bold;
     background: linear-gradient(to bottom, #7c949b 0%,#333141 100% );
+}
+
+
+.card{
+    align-items: center;
+    display: flex;
+    width: 100%;
+    color: #000;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
+
+.card label{
+    color: #000;
+}
+
+.card h3{
+    font-size: 1.5rem;
+    margin-left: 30px;
+}
+
+.pos{
+    justify-content: center;
+    color: #FFF;
+    width: 250px;
+    margin: 10px 20px;
+    padding: 10px 0px;
+    border-radius: 10px;
+    background-color: #284147;
+}
+
+.pos label{
+    color: #FFF;
+}
+
+.pos h3{
+
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.neg{
+    color: #FFF;
+    width: 250px;
+    margin: 10px 0px;
+    padding: 10px 0px;
+    border-radius: 10px;
+    background-color: rgb(68, 68, 68);
+}
+
+.neg label{
+    color: #FFF;
+}
+
+.neg h3{
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+
+.card-control{
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px 25px;
+    border-radius: 10px;
+    
+    background-color: rgb(41, 41, 44);
+}
+
+.choose{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgb(41, 41, 44);
+}
+
+.card-box{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    color: #000;
+    padding: 10px 0px;
+    border-radius: 15px;
+    background-color: rgb(41, 41, 44);
+}
+
+.card-control label {
+
+    display: block;
+    padding-top: 5px;
+    width: 300px;
+    padding-left: 15px;
+    text-indent: -15px;
+  }
+.card-control input {
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+  }
+
+  .hours-select{
+    text-align-last:center;
+    align-items: center;
+    margin: 10px 25px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+  }
+
+.sat{
+    display: none;
+}
+
+.sat2{
+    display: block;
+}
+
+
+
+
+@-webkit-keyframes anim-footer{
+    from{
+        background-color: #000000;
+    }
+
+    to{
+        background-color: #122019;
+    }
+}
+
+@keyframes anim-footer{
+    from{
+        background-color: #000000;
+    }
+
+    to{
+        background-color: #122019;
+    }
+}
+
+
+
+.footer{
+    margin-top: 25px;
+    width: 100%;
+    height: 50px;
+    padding-top: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    
+    background-color: #000000;
+    animation: anim-footer 5s 5s infinite alternate;
+}
+
+.footer h3{
+    padding-right: 25px;
+    text-align: right;
+    color: #FFF;
+}
+
+#dvData{
+    margin-bottom: 20px;
+}
+
+.actions{
+    display: flex;
+}
+  
+.actions input{
+    width: 250px;
+}
+
+input{
+    width: 200px;
+}
+
+
+h1{
+    margin: 25px 0px;
+}
+
+.btn-choose{
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-choose input{
+    width: 250px;
+    margin-bottom: 15px;
+}
+
+.btn-choose label{
+    width: 250px;
 }
